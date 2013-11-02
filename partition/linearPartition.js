@@ -1,3 +1,6 @@
+
+var seq = [9, 2, 6, 3, 8, 5, 8, 1, 7, 3, 4];
+
 function linearPartition(seq, k) {
     alert(seq.length);
 /*

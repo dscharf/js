@@ -1,6 +1,4 @@
 
-var seq = [9, 2, 6, 3, 8, 5, 8, 1, 7, 3, 4];
-
 function partitionImages() {
        //linearPartition(seq, 3);
         var x = linear_partition(seq, 3);
