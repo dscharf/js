@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Ajax Flickr L�sung Aufgabe 1</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script>
+            var searchText = 'modern architecture'
+            
+            // '&per_page=5' teilt bei der Anfrage an die Flickr-Api die Ergebnisse in Seiten auf
+            // '&page=1' gibt dann an welche Ergebnisseite zur�ckgegeben werden soll 
+            var pageId = 1
+            
+
+            
+            // L�dt Bilder �ber die flickr-api 
+            function loadImages() {
+                var requestURL = 'http://api.flickr.com/services/rest/' +
+                    '?&method=flickr.photos.search' +
+                    '&api_key=4ef2fe2affcdd6e13218f5ddd0e2500d' +
+                    '&text=' + searchText +
+                    '&page=' + pageId +
+                    '&per_page=5' + 
+                    '&sort=relevance' +
+                    '&format=json' +
+                    '&nojsoncallback=1';
+
+                // Instanziert das AJAX-Objekt (Browser Check)
+                var ajaxObject;
+                if (window.XMLHttpRequest) {
+                    // Variante f�r IE7+, Firefox, Chrome, Opera, Safari
+                    ajaxObject = new XMLHttpRequest();
+                } else {
+                    // Variante f�r IE6, IE5
+                    ajaxObject = new ActiveXObject("Microsoft.ajaxObject");
+                }
+
+                // Bei jeder �nderung der .readyState Variablen wird 
+                // die Funktion .onREADYSTATEchange aufgerufen  
+                ajaxObject.onreadystatechange = function() {
+                    
+                    // Wenn die Anfrage erfolgreich verarbeitet und Daten zur�ckgesendet worden sind          
+                    if (ajaxObject.readyState == 4 && ajaxObject.status == 200) {
+                        pageId++;
+
+                        // Wandelt den ResponseText in ein JSON-Objekt um
+                        var json = JSON.parse(ajaxObject.responseText);
+
+                        // Setzt f�r jedes Foto die URL aus den Daten zusammen
+                        for (var i = 0; i < json.photos.photo.length; i++) {
+                            var item = json.photos.photo[i];
+                            var photoURL = 'http://farm' + item.farm + '.static.flickr.com/' + item.server + '/' + item.id + '_' + item.secret + '_m.jpg';
+                            //var imageElement = '<img src="' + photoURL + '" >';
+                            
+                            var image = new Image();
+                            
+                            
+                            image.src = photoURL;
+                            image.onload=function() {
+                                //alert(this.width);
+                                this.setAttribute('width', this.width); 
+                                this.setAttribute('height', this.height);
+                                document.getElementById("container").appendChild(this);
+                                
+                            };
+                            
+                            
+                            // F�gt jedes Foto an den Inhalt des <div> Elements mit der ID Container an
+                            //document.getElementById("container").innerHTML += img;
+                        }
+                        
+                        // .children verweist auf den Array der Elemente innerhalb eines Elements
+                        // In diesem Fall verweist .children[0] auf das Element <input ... >
+                        document.getElementById("controls").children[0].removeAttribute("disabled");
+                        document.getElementById("status").innerHTML = "Fertig geladen";
+                    } 
+
+                    // Wenn die Verbindung initialisiert wird
+                    if (ajaxObject.readyState == 1) {
+                        document.getElementById("controls").children[0].disabled = "disabled";
+                        document.getElementById("status").innerHTML = "Lade...";
+                    }
+                }
+                ajaxObject.open("GET", requestURL, true);
+                ajaxObject.send();
+            }
+        </script>
+    </head>
+    
+    <body>
+        <div id="container">
+            <!-- HIER DIE BILDER REINLADEN -->
+        </div>
+        <div id="controls">
+            <input type="button" value="Mehr Bilder" onClick="loadImages();" />
+            <div id="status"></div>
+        </div>
+    </body>
+
+</html>
