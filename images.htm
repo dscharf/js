@@ -9,12 +9,19 @@
     <script>
 
         var seq = [9, 2, 6, 3, 8, 5, 8, 1, 7, 3, 4];
-        var res = greedyPartition(seq, 3);
-
+        var k = 3;
+        
         var out = seq.toString() + "\n" +
-            res[0] + "  " + res[1] + "  " + res[2] + "\n";
+            format(greedyPartition(seq, k)) + "\n";
 
         alert(out);
+
+        function format(a){
+            var res = "[" + a[0];
+            for(var i = 1; i < a.length; i++)
+                res =  res + "], [" + a[i].toString();
+            return res + "]";
+        }
 
     </script>
 </head>
