@@ -14,7 +14,7 @@
         var out = seq.toString() + "\n" +
             format(greedyPartition(seq, k)) + "\n";
 
-        alert(out);
+        //alert(out);
 
         function format(a){
             var res = "[" + a[0];
@@ -23,10 +23,21 @@
             return res + "]";
         }
 
+        function im(){
+            var img = [];
+            var docImgs = document.getElementById("images").children;
+            for(var i=0; i<docImgs.length; i++){
+                img.push(Math.round(docImgs[i].width / docImgs[i].height * 100));
+            }
+
+            
+
+            alert(img);
+        }
     </script>
 </head>
 
-<body>
+<body onload="im();">
     <div id="images">
         <img src="img/3856050852_a6c5d4a209_m.jpg" height="240" width="179">
         <img src="img/14142885_35613a2ff4_m.jpg" height="180" width="240">
